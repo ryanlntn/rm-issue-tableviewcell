@@ -1,0 +1,57 @@
+class TableViewController < UIViewController
+
+  def viewDidLoad
+    super
+
+    self.title = "Medic"
+
+    @table = UITableView.alloc.initWithFrame(self.view.bounds)
+    @table.dataSource = self
+    @table.delegate = self
+    @data = [
+      'Authorize',
+      'Characteristics',
+      'ObserverQuery',
+      'SourceQuery',
+      'SampleQuery',
+      'AnchoredObjectQuery',
+      'CorrelationQuery',
+      'StatisticsQuery',
+      'StatisticsCollectionQuery',
+      'Observe',
+      'FindSources',
+      'FindSamples',
+      'FindAnchored',
+      'FindCorrelations',
+      'FindStatistics',
+      'FindStatisticsCollection'
+    ]
+
+    self.view.addSubview @table
+  end
+
+  def tableView(tableView, cellForRowAtIndexPath: indexPath)
+    @reuseIdentifier ||= "CELL_IDENTIFIER"
+
+    cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier) || begin
+      UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:@reuseIdentifier)
+    end
+
+    cell.backgroundColor = UIColor.colorWithPatternImage(UIImage.imageNamed('circles'))
+
+    cell.textLabel.text = @data[indexPath.row]
+    cell
+  end
+
+  def tableView(tableView, didSelectRowAtIndexPath:indexPath)
+    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+    # self.navigationController.pushViewController(Kernel.const_get("#{@data[indexPath.row]}Controller").new, animated: true)
+  end
+
+  def tableView(tableView, numberOfRowsInSection: section)
+    @data.count
+  end
+
+end
+
